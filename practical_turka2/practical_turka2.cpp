@@ -1,23 +1,20 @@
 #include <iostream>
-#include <string>
 
 using namespace std;
 
-class Student {
+class ElectronicDevice {
 
 private:
 
     string name;
-    int age;
-    double averageGrade;
+    double screenSize;
 
 public:
 
-    Student(const string& n, int a, double g) {
+    ElectronicDevice(const string& n, double s) {
 
         setName(n);
-        setAge(a);
-        setAverageGrade(g);
+        setScreenSize(s);
     }
 
     void setName(const string& n) {
@@ -25,29 +22,16 @@ public:
         name = n;
     }
 
-    void setAge(int a) {
+    void setScreenSize(double s) {
 
-        if (a >= 0) {
+        if (s > 0) {
 
-            age = a;
+            screenSize = s;
         }
 
         else {
 
-            throw invalid_argument("Вiк не може бути негативним.");
-        }
-    }
-
-    void setAverageGrade(double g) {
-
-        if (g >= 0.0 && g <= 100.0) {
-
-            averageGrade = g;
-        }
-
-        else {
-
-            throw invalid_argument("Середнiй бал має бути в дiапазонi вiд 0 до 100.");
+            throw invalid_argument("Розмiр екрану має бути додатнiм числом.");
         }
     }
 
@@ -56,21 +40,108 @@ public:
         return name;
     }
 
-    int getAge() const {
+    double getScreenSize() const {
 
-        return age;
+        return screenSize;
     }
 
-    double getAverageGrade() const {
+    virtual void displayInfo() const {
 
-        return averageGrade;
+        cout << "Назва: " << name << '\n';
+        cout << "Розмiр екрану: " << screenSize << " дюймiв" << '\n';
+    }
+};
+
+class Smartphone : public ElectronicDevice {
+
+private:
+
+    string operatingSystem;
+
+public:
+
+    Smartphone(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+
+        setOperatingSystem(os);
     }
 
-    void displayInfo() const {
+    void setOperatingSystem(const string& os) {
 
-        cout << "Iм'я: " << name << '\n';
-        cout << "Вiк: " << age << '\n';
-        cout << "Середнiй бал: " << averageGrade << '\n';
+        operatingSystem = os;
+    }
+
+    string getOperatingSystem() const {
+
+        return operatingSystem;
+    }
+
+    void displayInfo() const override {
+
+        ElectronicDevice::displayInfo();
+
+        cout << "Операцiйна система: " << operatingSystem << '\n';
+    }
+};
+
+class Tablet : public ElectronicDevice {
+
+private:
+
+    string operatingSystem;
+
+public:
+
+    Tablet(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+
+        setOperatingSystem(os);
+    }
+
+    void setOperatingSystem(const string& os) {
+
+        operatingSystem = os;
+    }
+
+    string getOperatingSystem() const {
+
+        return operatingSystem;
+    }
+
+    void displayInfo() const override {
+
+        ElectronicDevice::displayInfo();
+
+        cout << "Операцiйна система: " << operatingSystem << '\n';
+    }
+};
+
+class Laptop : public ElectronicDevice {
+
+private:
+
+    string operatingSystem;
+
+public:
+
+    Laptop(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+
+        setOperatingSystem(os);
+    }
+
+    void setOperatingSystem(const string& os) {
+
+        operatingSystem = os;
+    }
+
+    string getOperatingSystem() const {
+
+        return operatingSystem;
+    }
+
+    void displayInfo() const override {
+
+        ElectronicDevice::displayInfo();
+
+        cout << "Операцiйна система: " << operatingSystem << '\n';
     }
 };
 
@@ -78,13 +149,26 @@ int main() {
 
     setlocale(LC_CTYPE, "ukr");
 
-    Student student("Iван Iванко", 20, 85.5);
+    Smartphone smartphone("iPhone 13", 6.1, "iOS");
 
-    student.displayInfo();
+    Tablet tablet("iPad Air", 10.9, "iPadOS");
+
+    Laptop laptop("MacBook Pro", 13.3, "macOS");
+
+    cout << "Смартфон: " << '\n';
+    smartphone.displayInfo();
     cout << '\n';
+
+    cout << "Планшет: " << '\n';
+    tablet.displayInfo();
+    cout << '\n';
+
+    cout << "Ноутбук: " << '\n';
+    laptop.displayInfo();
 
     return 0;
 } 
+
 
 
 
