@@ -2,146 +2,118 @@
 
 using namespace std;
 
-class ElectronicDevice {
+class File {
 
-private:
+protected:
 
     string name;
-    double screenSize;
+    int size;
 
 public:
 
-    ElectronicDevice(const string& n, double s) {
+    File(const string& n, int s) : name(n), size(s) {}
 
-        setName(n);
-        setScreenSize(s);
-    }
-
-    void setName(const string& n) {
-
-        name = n;
-    }
-
-    void setScreenSize(double s) {
-
-        if (s > 0) {
-
-            screenSize = s;
-        }
-
-        else {
-
-            throw invalid_argument("Розмiр екрану має бути додатнiм числом.");
-        }
-    }
-
-    string getName() const {
-
-        return name;
-    }
-
-    double getScreenSize() const {
-
-        return screenSize;
-    }
-
-    virtual void displayInfo() const {
+    void displayInfo() const {
 
         cout << "Назва: " << name << '\n';
-        cout << "Розмiр екрану: " << screenSize << " дюймiв" << '\n';
+        cout << "Розмiр: " << size << " KB" << '\n';
+    }
+
+    void readData() const {
+
+        cout << "Зчитую данi з файлу " << name << '\n';
+    }
+
+    void writeData() const {
+
+        cout << "Записуємо данi у файл " << name << '\n';
     }
 };
 
-class Smartphone : public ElectronicDevice {
+class TextFile : public File {
 
 private:
 
-    string operatingSystem;
+    string content;
 
 public:
 
-    Smartphone(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+    TextFile(const string& n, int s, const string& c) : File(n, s), content(c) {}
 
-        setOperatingSystem(os);
+    void displayInfo() const {
+
+        File::displayInfo();
+
+        cout << "Тип файлу: Текстовий файл" << '\n';
     }
 
-    void setOperatingSystem(const string& os) {
+    void readData() const {
 
-        operatingSystem = os;
+        cout << "Зчитуємо текстовi данi з файлу " << name << '\n';
     }
 
-    string getOperatingSystem() const {
+    void writeData() const {
 
-        return operatingSystem;
-    }
-
-    void displayInfo() const override {
-
-        ElectronicDevice::displayInfo();
-
-        cout << "Операцiйна система: " << operatingSystem << '\n';
+        cout << "Записуємо текстовi данi у файл " << name << '\n';
     }
 };
 
-class Tablet : public ElectronicDevice {
+class Image : public File {
 
 private:
 
-    string operatingSystem;
+    int width;
+    int height;
 
 public:
 
-    Tablet(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+    Image(const string& n, int s, int w, int h) : File(n, s), width(w), height(h) {}
 
-        setOperatingSystem(os);
+    void displayInfo() const {
+
+        File::displayInfo();
+
+        cout << "Тип файлу: Зображення" << '\n';
+        cout << "Розмiри: " << width << "x" << height << '\n';
     }
 
-    void setOperatingSystem(const string& os) {
+    void readData() const {
 
-        operatingSystem = os;
+        cout << "Зчитуємо данi зображення з файлу " << name << '\n';
     }
 
-    string getOperatingSystem() const {
+    void writeData() const {
 
-        return operatingSystem;
-    }
-
-    void displayInfo() const override {
-
-        ElectronicDevice::displayInfo();
-
-        cout << "Операцiйна система: " << operatingSystem << '\n';
+        cout << "Записуємо данi зображення у файл " << name << '\n';
     }
 };
 
-class Laptop : public ElectronicDevice {
+class Video : public File {
 
 private:
 
-    string operatingSystem;
+    int duration;
 
 public:
 
-    Laptop(const string& n, double s, const string& os) : ElectronicDevice(n, s) {
+    Video(const string& n, int s, int d) : File(n, s), duration(d) {}
 
-        setOperatingSystem(os);
+    void displayInfo() const {
+
+        File::displayInfo();
+
+        cout << "Тип файлу: Вiдео" << '\n';
+        cout << "Тривалiсть: " << duration << " хвилин" << '\n';
     }
 
-    void setOperatingSystem(const string& os) {
+    void readData() const {
 
-        operatingSystem = os;
+        cout << "Зчитуємо данi вiдео з файлу " << name << '\n';
     }
 
-    string getOperatingSystem() const {
+    void writeData() const {
 
-        return operatingSystem;
-    }
-
-    void displayInfo() const override {
-
-        ElectronicDevice::displayInfo();
-
-        cout << "Операцiйна система: " << operatingSystem << '\n';
+        cout << "Записуємо данi вiдео у файл " << name << '\n';
     }
 };
 
@@ -149,26 +121,31 @@ int main() {
 
     setlocale(LC_CTYPE, "ukr");
 
-    Smartphone smartphone("iPhone 13", 6.1, "iOS");
+    TextFile textFile("document.txt", 1024, "Це текстовий файл");
 
-    Tablet tablet("iPad Air", 10.9, "iPadOS");
+    Image imageFile("photo.jpg", 2048, 800, 600);
 
-    Laptop laptop("MacBook Pro", 13.3, "macOS");
+    Video videoFile("movie.mp4", 4096, 120);
 
-    cout << "Смартфон: " << '\n';
-    smartphone.displayInfo();
+    cout << "Iнформацiя про текстовий файл: " << '\n';
+    textFile.displayInfo();
     cout << '\n';
 
-    cout << "Планшет: " << '\n';
-    tablet.displayInfo();
+    cout << "Iнформацiя про зображення: " << '\n';
+    imageFile.displayInfo();
     cout << '\n';
 
-    cout << "Ноутбук: " << '\n';
-    laptop.displayInfo();
+    cout << "Iнформацiя про вiдео: " << '\n';
+    videoFile.displayInfo();
+    cout << '\n';
+
+    textFile.readData();
+    imageFile.readData();
+    videoFile.readData();
+
+    textFile.writeData();
+    imageFile.writeData();
+    videoFile.writeData();
 
     return 0;
 } 
-
-
-
-
